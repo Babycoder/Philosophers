@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayghazal <ayghazal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayghazal <ayghazal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/30 14:32:44 by ayghazal          #+#    #+#             */
-/*   Updated: 2021/05/30 13:57:53 by ayghazal         ###   ########.fr       */
+/*   Updated: 2021/10/14 15:07:11 by ayghazal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "utill.h"
 
 int	ft_strcmp(char *s1, char *s2)
 {

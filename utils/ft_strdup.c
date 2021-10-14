@@ -1,25 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   m_strlen.c                                         :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayghazal <ayghazal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayghazal <ayghazal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/10 10:30:26 by ayghazal          #+#    #+#             */
-/*   Updated: 2021/05/30 13:53:59 by ayghazal         ###   ########.fr       */
+/*   Created: 2019/10/14 00:20:23 by ayghazal          #+#    #+#             */
+/*   Updated: 2021/10/14 15:08:45 by ayghazal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "utill.h"
 
-size_t	m_strlen(const char *s)
+char	*ft_strdup(const char *s1)
 {
-	int	i;
+	char		*ptr;
+	int			len;
 
-	i = 0;
-	while (s[i] != '\0')
-	{
-		i++;
-	}
-	return (i);
+	len = ft_strlen(s1);
+	ptr = (char *)malloc((len + 1) * sizeof(char));
+	if (ptr == NULL)
+		return (NULL);
+	ft_memcpy(ptr, s1, len);
+	ptr[len] = '\0';
+	return (ptr);
 }

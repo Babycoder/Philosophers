@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayghazal <ayghazal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayghazal <ayghazal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/26 18:12:35 by ayghazal          #+#    #+#             */
-/*   Updated: 2021/05/30 13:50:39 by ayghazal         ###   ########.fr       */
+/*   Updated: 2021/10/14 15:08:15 by ayghazal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "utill.h"
 
 static int	count(char const *s, char c)
 {
@@ -75,7 +75,7 @@ char	**ft_split(char const *s, char c)
 	{
 		while (*s != '\0' && *s == c)
 			s++;
-		temp[i] = m_substr(s, 0, len(s, c));
+		temp[i] = ft_substr(s, 0, len(s, c));
 		if (!temp[i])
 			return (ft_free(&temp, i));
 		s = s + len(s, c);
