@@ -6,7 +6,7 @@
 /*   By: ayghazal <ayghazal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 08:46:00 by ayghazal          #+#    #+#             */
-/*   Updated: 2021/10/18 00:02:24 by ayghazal         ###   ########.fr       */
+/*   Updated: 2021/10/18 00:10:04 by ayghazal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void		store_data(char **str, t_data *data)
 int	main(int ac, char *av[])
 {
 	t_data data;
+	
 
 	if (check_data(av) == 0)
 	{
@@ -79,3 +80,17 @@ int	main(int ac, char *av[])
 		printf("Error: Arguments!!\n");
 	return(0);
 }
+
+  /*pthread_t t1, t2;
+	pthread_mutex_init(&mutex, NULL);
+	
+	pthread_create(&t1, NULL, &routine, NULL);
+	
+	pthread_create(&t2, NULL, &routine, NULL);
+	
+	pthread_join(t1, NULL);
+	pthread_join(t2, NULL);
+
+	printf("c = %d\n", c);
+	pthread_mutex_destroy(&mutex);
+	return(0);*/

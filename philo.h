@@ -6,7 +6,7 @@
 /*   By: ayghazal <ayghazal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 16:38:46 by ayghazal          #+#    #+#             */
-/*   Updated: 2021/10/17 23:55:13 by ayghazal         ###   ########.fr       */
+/*   Updated: 2021/10/18 00:09:01 by ayghazal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,18 @@ typedef struct s_data{
     
 } t_data;
 
-/*typedef struct s_philo{
-    //thread
-    //mutex
-    //last time ate
-    // pointer to data 
-    t_data *data;
+typedef struct  s_philo{
+    
+    pthread_t thread;
+    
+    pthread_mutex_t mutex;
+    
+    long long last_meal; 
+    
+    t_data  *data;
+    
     struct s_philo *next;
-} t_philo;*/
+    
+}               t_philo;
 
 #endif
