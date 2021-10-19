@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayghazal <ayghazal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ayghazal <ayghazal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 16:38:46 by ayghazal          #+#    #+#             */
-/*   Updated: 2021/10/19 02:44:05 by ayghazal         ###   ########.fr       */
+/*   Updated: 2021/10/19 14:52:06 by ayghazal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,9 @@ typedef struct  s_philo{
     
     pthread_mutex_t mutex;
     
-    long last_meal; 
+    long last_meal;
+    
+    int num_meal;
     
     t_data  *data;
     

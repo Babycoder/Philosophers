@@ -3,20 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayghazal <ayghazal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ayghazal <ayghazal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 08:46:00 by ayghazal          #+#    #+#             */
-/*   Updated: 2021/10/19 03:03:46 by ayghazal         ###   ########.fr       */
+/*   Updated: 2021/10/19 18:20:01 by ayghazal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	print_data(t_data data)
-{
-	printf("num_of_philo = %d\ntime_to_die = %lld\ntime_to_eat = %lld\ntime_to_sleep = %lld\nnum_of_meals = %d\n", data.num_of_philo, data.time_to_die, data.time_to_eat, data.time_to_sleep, data.num_of_meals);
-}
-
 
 long    get_time(void)
 {
@@ -26,6 +20,17 @@ long    get_time(void)
     return (time.tv_usec + (time.tv_sec * 1000000));
 }
 
+void    ft_usleep(long int time)
+{
+    long long    r;
+    long long    mic;
+
+    mic = get_time();
+    r = time - 1000;
+    usleep(r);
+    while ((get_time() - mic) <= (time))
+        ;
+}
 
 int		ft_onlydigit(char *s)
 {
@@ -87,6 +92,7 @@ void	fill_philo(t_philo **philo, int id, t_data *data)
 {
 	t_philo *newphilo = (t_philo *)malloc(sizeof(t_philo));
 	newphilo->id = id;
+	newphilo->num_meal = 0;
 	newphilo->data = data;
 	pthread_mutex_init(&newphilo->mutex, NULL);
     newphilo->next = NULL;
@@ -97,14 +103,14 @@ void	fill_philo(t_philo **philo, int id, t_data *data)
 	{
 		t_philo	*head = *philo;
 		t_philo *lastphilo = *philo;
-        
+
         while(lastphilo->next != NULL)
         {
             lastphilo = lastphilo->next;
         }
         lastphilo->next = newphilo;
 		if (id == data->num_of_philo)
-			lastphilo->next->next = head; 
+			lastphilo->next->next = head;
 	}
 }
 
@@ -125,26 +131,42 @@ void	*ft_philosophers(t_philo *philo)
 	while(1)
 	{
 		pthread_mutex_lock(&philo->mutex);
-		pthread_mutex_lock(&philo->next->mutex);
-		
+		pthread_mutex_lock(&philo->next->mutex);	
 		printf("%ld %d has taken a fork\n", ((get_time() - philo->data->entry_time)/1000), philo->id);
 		printf("%ld %d has taken a fork\n", ((get_time() - philo->data->entry_time)/1000), philo->id);
 		printf("%ld %d is eating\n", ((get_time() - philo->data->entry_time)/1000), philo->id);
 		philo->last_meal = get_time();
-		usleep(philo->data->time_to_eat);
-		
+		philo->num_meal += 1;
+		ft_usleep(philo->data->time_to_eat);
 		pthread_mutex_unlock(&philo->mutex);
 		pthread_mutex_unlock(&philo->next->mutex);
-		
 		printf("%ld %d is sleeping\n", ((get_time() - philo->data->entry_time)/1000), philo->id);
-		usleep(philo->data->time_to_sleep);
-		
+		ft_usleep(philo->data->time_to_sleep);
 		printf("%ld %d is thinking\n", ((get_time() - philo->data->entry_time)/1000), philo->id);
 	}
 	return NULL;
 }
 
+int 	all_ate(t_philo *philo)
+{
+	t_philo *tmp;
+	int i;
+	int  ate;
 
+	ate = 0;
+	i = 0;
+	tmp = philo;
+	while(i < tmp->data->num_of_philo)
+	{
+		if (tmp->num_meal == tmp->data->num_of_meals)
+			ate++;
+		tmp = tmp->next;
+		i++;
+	}
+	if (ate == philo->data->num_of_philo)
+		return(1);
+	return(0);
+}
 
 void	ft_supervisor(t_philo *philo)
 {
@@ -158,16 +180,39 @@ void	ft_supervisor(t_philo *philo)
 			printf("%ld %d died\n", ((get_time() - philo->data->entry_time)/1000), philo->id);
 			return ;
 		}
+		if (all_ate(philo))
+			return ;
 		tmp = tmp->next;
 	}
 }
+
+void deleteList(t_philo **head)
+{
+	t_philo	*current;
+	t_philo	*next;
+	int i;
+	int n;
+	
+	i = 0;
+	current = *head;
+	n = current->data->num_of_philo; 
+	while(i < n)
+	{
+		next = current->next;
+		pthread_mutex_destroy(&current->mutex);
+		free(current);
+		current = next;
+		i++;
+	}
+	*head = NULL;
+}
+
 
 int	main(int ac, char *av[])
 {
 	t_data data;
 	t_philo *philo = NULL;
 	t_philo *tmp;
-	long
 	
 	int i = 0;
 	philo = NULL;
@@ -184,7 +229,6 @@ int	main(int ac, char *av[])
 		i++;
 	}
 	
-
 	//======= THREAD CREATE ===========
 	
 	i = 0;
@@ -193,56 +237,12 @@ int	main(int ac, char *av[])
 	{
 		tmp->last_meal = get_time();
 		pthread_create(&tmp->thread, NULL, (void *)ft_philosophers, tmp);
-		usleep(100);
-		tmp = tmp->next;
+		usleep(50);
+		tmp =  tmp->next;
 		i++;
 	}
-	
-
-	ft_supervisor(philo);	
+	ft_supervisor(philo);
+	deleteList(&philo);
 
 	return(EXIT_SUCCESS);
-	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  /*pthread_t t1, t2;
-	pthread_mutex_init(&mutex, NULL);
-	
-	pthread_create(&t1, NULL, &routine, NULL);
-	
-	pthread_create(&t2, NULL, &routine, NULL);
-	
-	pthread_join(t1, NULL);
-	pthread_join(t2, NULL);
-
-	printf("c = %d\n", c);
-	pthread_mutex_destroy(&mutex);
-	return(0);*/
