@@ -6,7 +6,7 @@
 /*   By: ayghazal <ayghazal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 08:46:00 by ayghazal          #+#    #+#             */
-/*   Updated: 2021/10/19 18:20:01 by ayghazal         ###   ########.fr       */
+/*   Updated: 2021/10/19 18:41:12 by ayghazal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void		store_data(char **str, t_data *data)
 	data->time_to_die = ft_atoi(str[2]) * 1000;
 	data->time_to_eat = ft_atoi(str[3]) * 1000;
 	data->time_to_sleep = ft_atoi(str[4]) * 1000;
+	data->num_of_meals = 0;
 	if (str[5] != NULL)
 		data->num_of_meals = ft_atoi(str[5]);
 	data->entry_time = get_time();
@@ -130,6 +131,8 @@ void	*ft_philosophers(t_philo *philo)
 {
 	while(1)
 	{
+		if (philo->num_meal == philo->data->num_of_meals && philo->data->num_of_meals != 0)
+			break ;
 		pthread_mutex_lock(&philo->mutex);
 		pthread_mutex_lock(&philo->next->mutex);	
 		printf("%ld %d has taken a fork\n", ((get_time() - philo->data->entry_time)/1000), philo->id);
