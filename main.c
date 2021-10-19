@@ -6,7 +6,7 @@
 /*   By: ayghazal <ayghazal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 08:46:00 by ayghazal          #+#    #+#             */
-/*   Updated: 2021/10/19 23:19:03 by ayghazal         ###   ########.fr       */
+/*   Updated: 2021/10/20 00:17:34 by ayghazal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,12 @@ void	fill_philo(t_philo **philo, int id, t_data *data)
 	pthread_mutex_init(&newphilo->mutex, NULL);
     newphilo->next = NULL;
 
+	if (data->num_of_philo == 1)
+	{
+		*philo = newphilo;
+		(*philo)->next = newphilo;
+		return ;
+	}
 	if (*philo == NULL)
 		*philo = newphilo;
 	else
@@ -139,8 +145,8 @@ void	*ft_philosophers(t_philo *philo)
 		if (philo->num_meal == philo->data->num_of_meals && philo->data->num_of_meals != 0)
 			break ;
 		pthread_mutex_lock(&philo->mutex);
-		pthread_mutex_lock(&philo->next->mutex);	
 		printf("%ld %d has taken a fork\n", ((get_time() - philo->data->entry_time)/1000), philo->id);
+		pthread_mutex_lock(&philo->next->mutex);	
 		printf("%ld %d has taken a fork\n", ((get_time() - philo->data->entry_time)/1000), philo->id);
 		printf("%ld %d is eating\n", ((get_time() - philo->data->entry_time)/1000), philo->id);
 		philo->last_meal = get_time();
@@ -183,13 +189,17 @@ void	ft_supervisor(t_philo *philo)
 	tmp = philo;
 	while(tmp->next != NULL)
 	{
+		//printf("Hello\n");
 		if (get_time() - tmp->last_meal >= tmp->data->time_to_die)
 		{
 			printf("%ld %d died\n", ((get_time() - philo->data->entry_time)/1000), philo->id);
 			return ;
 		}
-		if (all_ate(philo))
-			return ;
+		if (philo->data->num_of_meals != 0)
+		{
+			if (all_ate(philo))
+				return ;
+		}
 		tmp = tmp->next;
 	}
 }
@@ -234,11 +244,6 @@ int	main(int ac, char *av[])
 		return(EXIT_SUCCESS);
 	if (data.num_of_philo <= 0)
 		return(EXIT_FAILURE);
-	if (data.num_of_philo == 1)
-	{
-		printf("0 1 has taken a fork\n%lld 1 died\n", (data.time_to_die)/1000);	
-		return(EXIT_SUCCESS);
-	}
 	while(i < data.num_of_philo)
 	{
 		fill_philo(&philo, (i + 1), &data);
