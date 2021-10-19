@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayghazal <ayghazal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayghazal <ayghazal@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 08:46:00 by ayghazal          #+#    #+#             */
-/*   Updated: 2021/10/19 19:02:40 by ayghazal         ###   ########.fr       */
+/*   Updated: 2021/10/19 23:19:03 by ayghazal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int		check_data(char **str)
 	return(0);
 }
 
-void		store_data(char **str, t_data *data)
+int		store_data(char **str, t_data *data)
 {
 
 	data->num_of_philo = ft_atoi(str[1]);
@@ -78,8 +78,13 @@ void		store_data(char **str, t_data *data)
 	data->time_to_sleep = ft_atoi(str[4]) * 1000;
 	data->num_of_meals = 0;
 	if (str[5] != NULL)
+	{
 		data->num_of_meals = ft_atoi(str[5]);
+		if (data->num_of_meals == 0)
+			return(1);
+	}
 	data->entry_time = get_time();
+	return(0);
 }
 
 int		ft_error(int ac)
@@ -225,7 +230,15 @@ int	main(int ac, char *av[])
 	if (check_data(av) == 1)
 		return(ft_error(ac));
 	
-	store_data(av, &data);
+	if (store_data(av, &data) == 1)
+		return(EXIT_SUCCESS);
+	if (data.num_of_philo <= 0)
+		return(EXIT_FAILURE);
+	if (data.num_of_philo == 1)
+	{
+		printf("0 1 has taken a fork\n%lld 1 died\n", (data.time_to_die)/1000);	
+		return(EXIT_SUCCESS);
+	}
 	while(i < data.num_of_philo)
 	{
 		fill_philo(&philo, (i + 1), &data);
@@ -240,7 +253,7 @@ int	main(int ac, char *av[])
 	{
 		tmp->last_meal = get_time();
 		pthread_create(&tmp->thread, NULL, (void *)ft_philosophers, tmp);
-		usleep(50);
+		usleep(100);
 		tmp =  tmp->next;
 		i++;
 	}
