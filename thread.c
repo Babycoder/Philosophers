@@ -1,27 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   thread.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayghazal <ayghazal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ayghazal <ayghazal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/19 17:20:17 by ayghazal          #+#    #+#             */
-/*   Updated: 2021/10/14 15:03:54 by ayghazal         ###   ########.fr       */
+/*   Created: 2021/10/20 14:43:09 by ayghazal          #+#    #+#             */
+/*   Updated: 2021/10/20 15:08:51 by ayghazal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utill.h"
+#include "philo.h"
 
-void	ft_putstr_fd(char *s, int fd)
+void	ft_threads(t_philo *philo)
 {
-	int	i;
+	int		i;
+	t_philo	*tmp;
 
 	i = 0;
-	if (!s || s == NULL)
-		return ;
-	while (s[i] != '\0')
+	tmp = philo;
+	while (i < philo->data->num_of_philo)
 	{
-		ft_putchar_fd(s[i], fd);
+		tmp->last_meal = get_time();
+		pthread_create(&tmp->thread, NULL, (void *)ft_philosophers, tmp);
+		usleep(100);
+		tmp = tmp->next;
 		i++;
 	}
 }

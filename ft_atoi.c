@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayghazal <ayghazal@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ayghazal <ayghazal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 17:12:39 by ayghazal          #+#    #+#             */
-/*   Updated: 2021/10/14 15:03:54 by ayghazal         ###   ########.fr       */
+/*   Updated: 2021/10/20 14:54:13 by ayghazal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utill.h"
+#include "philo.h"
 
 int	ft_return_atoi(int s)
 {
