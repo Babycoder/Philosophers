@@ -6,7 +6,7 @@
 #    By: ayghazal <ayghazal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/18 23:53:17 by ayghazal          #+#    #+#              #
-#    Updated: 2021/10/20 14:57:20 by ayghazal         ###   ########.fr        #
+#    Updated: 2021/10/20 15:32:16 by ayghazal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ FLAGS=-Wall -Wextra -Werror
 
 NAME=philo
 
-$(NAME): 
+$(NAME):
 	gcc	$(FLAGS) $(SRC) -o $(NAME) -lpthread
 
 all: $(NAME)

@@ -6,31 +6,37 @@
 /*   By: ayghazal <ayghazal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 08:46:00 by ayghazal          #+#    #+#             */
-/*   Updated: 2021/10/20 15:14:12 by ayghazal         ###   ########.fr       */
+/*   Updated: 2021/10/20 15:19:36 by ayghazal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+long	timestamp(t_philo *philo)
+{
+	return ((get_time() - philo->data->entry_time) / 1000);
+}
+
 void	*ft_philosophers(t_philo *philo)
 {
 	while (1)
 	{
-		if (philo->num_meal == philo->data->num_of_meals && philo->data->num_of_meals != 0)
+		if (philo->num_meal == philo->data->num_of_meals
+			&& philo->data->num_of_meals != 0)
 			break ;
 		pthread_mutex_lock(&philo->mutex);
-		printf("%ld %d has taken a fork\n", ((get_time() - philo->data->entry_time) / 1000), philo->id);
+		printf("%ld %d has taken a fork\n", timestamp(philo), philo->id);
 		pthread_mutex_lock(&philo->next->mutex);
-		printf("%ld %d has taken a fork\n", ((get_time() - philo->data->entry_time) / 1000), philo->id);
-		printf("%ld %d is eating\n", ((get_time() - philo->data->entry_time) / 1000), philo->id);
+		printf("%ld %d has taken a fork\n", timestamp(philo), philo->id);
+		printf("%ld %d is eating\n", timestamp(philo), philo->id);
 		philo->last_meal = get_time();
 		philo->num_meal += 1;
 		ft_usleep(philo->data->time_to_eat);
 		pthread_mutex_unlock(&philo->mutex);
 		pthread_mutex_unlock(&philo->next->mutex);
-		printf("%ld %d is sleeping\n", ((get_time() - philo->data->entry_time) / 1000), philo->id);
+		printf("%ld %d is sleeping\n", timestamp(philo), philo->id);
 		ft_usleep(philo->data->time_to_sleep);
-		printf("%ld %d is thinking\n", ((get_time() - philo->data->entry_time) / 1000), philo->id);
+		printf("%ld %d is thinking\n", timestamp(philo), philo->id);
 	}
 	return (NULL);
 }

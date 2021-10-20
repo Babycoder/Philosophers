@@ -6,21 +6,38 @@
 /*   By: ayghazal <ayghazal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 14:38:21 by ayghazal          #+#    #+#             */
-/*   Updated: 2021/10/20 15:04:09 by ayghazal         ###   ########.fr       */
+/*   Updated: 2021/10/20 15:31:09 by ayghazal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+void	push_last(t_philo **philo, t_philo *newphilo, int id, t_data *data)
+{
+	t_philo	*head;
+	t_philo	*lastphilo;
+
+	lastphilo = *philo;
+	head = *philo;
+	while (lastphilo->next != NULL)
+	{
+		lastphilo = lastphilo->next;
+	}
+	lastphilo->next = newphilo;
+	if (id == data->num_of_philo)
+		lastphilo->next->next = head;
+}
+
 void	fill_philo(t_philo **philo, int id, t_data *data)
 {
-	t_philo *newphilo = (t_philo *)malloc(sizeof(t_philo));
+	t_philo	*newphilo;
+
+	newphilo = (t_philo *)malloc(sizeof(t_philo));
 	newphilo->id = id;
 	newphilo->num_meal = 0;
 	newphilo->data = data;
 	pthread_mutex_init(&newphilo->mutex, NULL);
 	newphilo->next = NULL;
-
 	if (data->num_of_philo == 1)
 	{
 		*philo = newphilo;
@@ -30,18 +47,7 @@ void	fill_philo(t_philo **philo, int id, t_data *data)
 	if (*philo == NULL)
 		*philo = newphilo;
 	else
-	{
-		t_philo	*head = *philo;
-		t_philo *lastphilo = *philo;
-
-		while(lastphilo->next != NULL)
-		{
-			lastphilo = lastphilo->next;
-		}
-		lastphilo->next = newphilo;
-		if (id == data->num_of_philo)
-			lastphilo->next->next = head;
-	}
+		push_last(philo, newphilo, id, data);
 }
 
 void	deleteList(t_philo **head)
