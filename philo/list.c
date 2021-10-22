@@ -6,7 +6,7 @@
 /*   By: ayghazal <ayghazal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 14:38:21 by ayghazal          #+#    #+#             */
-/*   Updated: 2021/10/20 15:31:09 by ayghazal         ###   ########.fr       */
+/*   Updated: 2021/10/22 12:29:34 by ayghazal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	fill_philo(t_philo **philo, int id, t_data *data)
 	newphilo = (t_philo *)malloc(sizeof(t_philo));
 	newphilo->id = id;
 	newphilo->num_meal = 0;
+	newphilo->eating = 0;
 	newphilo->data = data;
 	pthread_mutex_init(&newphilo->mutex, NULL);
 	newphilo->next = NULL;
@@ -57,9 +58,11 @@ void	deleteList(t_philo **head)
 	int		i;
 	int		n;
 
+	usleep(100);
 	i = 0;
 	current = *head;
 	n = current->data->num_of_philo;
+	pthread_mutex_destroy(&g_write);
 	while (i < n)
 	{
 		next = current->next;

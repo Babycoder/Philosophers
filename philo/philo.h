@@ -6,7 +6,7 @@
 /*   By: ayghazal <ayghazal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/17 16:38:46 by ayghazal          #+#    #+#             */
-/*   Updated: 2021/10/20 15:40:33 by ayghazal         ###   ########.fr       */
+/*   Updated: 2021/10/22 12:31:45 by ayghazal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <pthread.h>
 # include <sys/time.h>
 
+pthread_mutex_t	g_write;
+
 typedef struct s_data{
 	int			num_of_philo;
 	long long	time_to_die;
@@ -30,6 +32,7 @@ typedef struct s_data{
 
 typedef struct s_philo{
 	int				id;
+	int				eating;
 	pthread_t		thread;
 	pthread_mutex_t	mutex;
 	long			last_meal;
@@ -51,5 +54,7 @@ void	ft_usleep(long int time);
 int		ft_onlydigit(char *s);
 int		check_data(char **str);
 int		ft_atoi(const char *str);
+void	*ft_philosophers(t_philo *philo);
+long	timestamp(t_philo *philo);
 
 #endif

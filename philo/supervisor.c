@@ -6,7 +6,7 @@
 /*   By: ayghazal <ayghazal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 14:40:00 by ayghazal          #+#    #+#             */
-/*   Updated: 2021/10/20 15:07:31 by ayghazal         ###   ########.fr       */
+/*   Updated: 2021/10/22 12:33:34 by ayghazal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,12 @@ void	ft_supervisor(t_philo *philo)
 	tmp = philo;
 	while (tmp->next != NULL)
 	{
-		if (get_time() - tmp->last_meal >= tmp->data->time_to_die)
+		if ((get_time() - tmp->last_meal >= tmp->data->time_to_die)
+			&& tmp->eating == 0)
 		{
-			printf("%ld %d died\n",
-				((get_time() - philo->data->entry_time) / 1000), philo->id);
+			pthread_mutex_lock(&g_write);
+			printf("\033[0;31m%ld %d died\n",
+				((get_time() - philo->data->entry_time) / 1000), tmp->id);
 			return ;
 		}
 		if (philo->data->num_of_meals != 0)

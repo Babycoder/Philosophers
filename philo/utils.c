@@ -6,7 +6,7 @@
 /*   By: ayghazal <ayghazal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 14:36:38 by ayghazal          #+#    #+#             */
-/*   Updated: 2021/10/20 15:02:22 by ayghazal         ###   ########.fr       */
+/*   Updated: 2021/10/22 11:28:09 by ayghazal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	ft_usleep(long int time)
 	long long	mic;
 
 	mic = get_time();
-	r = time - 1000;
+	r = time - 10000;
 	usleep(r);
 	while ((get_time() - mic) <= (time))
 		;
